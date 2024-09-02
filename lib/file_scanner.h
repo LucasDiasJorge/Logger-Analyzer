@@ -8,6 +8,12 @@
 
 #define BUFFER_SIZE 1024
 
+typedef struct {
+    const char *filename;
+    const char *target_string;
+    const char *command;
+} thread_data_t;
+
 void tail_file(const char *filename, const char *target, const char *command);
 
 #endif
