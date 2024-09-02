@@ -8,6 +8,6 @@
 
 #define BUFFER_SIZE 1024
 
-void tail_file(const char *filename, const char *target);
+void tail_file(const char *filename, const char *target, const char *command);
 
 #endif
