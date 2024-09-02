@@ -3,9 +3,12 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "/home/user/Documentos/Logger-Analyzer/lib/action.h"
+
 #define BUFFER_SIZE 1024
 
-void tail_file(const char *filename, const char *target_string) {
+void tail_file(const char *filename, const char *target_string, const char *command) {
+    
     FILE *file;
     char buffer[BUFFER_SIZE];
     long position;
@@ -32,6 +35,7 @@ void tail_file(const char *filename, const char *target_string) {
             // Compare the line with the target string
             if (strstr(buffer, target_string) != NULL) {
                 printf("Found the target string: %s\n", target_string);
+                run_command(command);
             }
 
             // Update the position for the next iteration
