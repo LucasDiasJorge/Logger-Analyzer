@@ -26,7 +26,21 @@
  2024-07-31 14:05:19.529  WARN 61569 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected
  2024-07-31 14:05:19.529  WARN 61569 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected
  2024-07-31 14:05:19.529  WARN 61569 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected
- 2024-07-31 14:05:19.529  WARN 61569 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected
+ 2024-07-31 14:05:19.529  ERROR 61569 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected
  ERROR
- ERROR
- ERROR 2
+ ERROR 1
+ LJ
+ Thread
+ Thread
+ Thread
+ Thread
+ Thread
+ Thread
+ Thread
+ Thread
+ Thread
+
+
+
+ Thread
+ Thread
