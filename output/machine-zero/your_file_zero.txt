@@ -1,0 +1,64 @@
+ 1 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 2 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 3 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 4 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 5 something here from the Kernel [Logger - Thread Simulator] - Lucas Jorge Dias;
+ 6 something here from the Kernel [Logger - Thread Simulator] - Lucas Jorge;
+ 7 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge 2;
+ 8 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 9 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 10 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 11 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 12 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 13 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 14 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 15 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 16 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 17 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 18 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 19 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 19 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 19 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 19 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 19 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 19 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 19 something here from the Kernel [Logger - Thread Simulator] - Lucas Dias Jorge;
+ 2024-07-31 14:05:19.529  WARN 61569 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected
+ 2024-07-31 14:05:19.529  WARN 61569 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected
+ 2024-07-31 14:05:19.529  WARN 61569 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected
+ 2024-07-31 14:05:19.529  WARN 61569 --- [l-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected
+ ERROR
+ ERROR
+ https://man7.org/linux/man-pages/man7/inotify.7.html
+ ERROR
+ ERRORERROR
+ ERROR
+ ERROR
+ ERROR
+ ERROR
+ Thread starvation
+ LJLJ
+ LJ1
+ LJ
+
+
+
+
+
+ -------
+ ls
+ ls
+Thread
+Thread
+Thread
+Thread
+Thread
+Thread
+ ThreadThread.
+ Thread
+ Thread
+ Thread
+ Thread
+ Thread
+ Thread
+ Thread
