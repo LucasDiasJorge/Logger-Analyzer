@@ -8,7 +8,8 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <limits.h>
-#include "/home/user/Documentos/Logger-Analyzer/lib/action.h"
+#include <time.h>
+#include "lib/action.h"
 
 #define BUFFER_SIZE 1024
 #define EVENT_SIZE (sizeof(struct inotify_event))
@@ -48,6 +49,19 @@ char* get_newest_file(const char* dirpath) {
     return newest_file;
 }
 
+void print_current_time() {
+    time_t now;
+    struct tm *info;
+    char time_buffer[80];
+
+    time(&now);
+    info = localtime(&now);
+
+    // Format: YYYY-MM-DD HH:MM:SS
+    strftime(time_buffer, 80, "%Y-%m-%d %H:%M:%S", info);
+    printf("[%s]", time_buffer);
+}
+
 void tail_file(const char *filename, const char *target_string, const char *command) {
     FILE *file;
     char buffer[BUFFER_SIZE];
@@ -83,7 +97,6 @@ void tail_file(const char *filename, const char *target_string, const char *comm
     }
 
     while (1) {
-        printf("Reading file: %s\n",filename);
         char event_buf[EVENT_BUF_LEN];
         int length = read(fd, event_buf, EVENT_BUF_LEN);
 
@@ -95,11 +108,23 @@ void tail_file(const char *filename, const char *target_string, const char *comm
         // Process the file modifications
         fseek(file, position, SEEK_SET);
         while (fgets(buffer, BUFFER_SIZE, file) != NULL) {
-            //printf("Read line: %s\n", buffer);
-
+            
             if (strstr(buffer, target_string) != NULL) {
-                //printf("Found the target string: %s\n", target_string);
-                run_command(command);  // Trigger the action
+                printf("\n");
+                printf("======================== [EVENT DETECTED] ========================\n");
+                print_current_time();
+                printf("\nTarget string \"%s\" \nFound in file: \n%s\n", target_string, filename);
+                printf("==================================================================\n");
+                print_current_time();
+                printf(" Sending command: \"%s\" ...\n", command);
+                
+                // Trigger the action
+                run_command(command);
+                
+                print_current_time();
+                printf(" Command \"%s\" execution completed.\n", command);
+                printf("========================== [END EVENT] ===========================\n\n");
+                fflush(stdout);
             }
 
             position = ftell(file);
