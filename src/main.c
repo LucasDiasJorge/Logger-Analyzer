@@ -35,11 +35,26 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    const char *directories[4] = {
-        "output/machine-zero",
-        "output/machine-one",
-        "output/machine-two",
-        "output/machine-three"};
+    const char *directories[4];
+    char buffer[256];  // Buffer para armazenar a entrada do usuário
+
+    for (int i = 0; i < 4; i++) {
+        printf("Digite o caminho para o diretório %d: ", i);
+        scanf("%255s", buffer);  // Lê até 255 caracteres para evitar overflow
+
+        // Alocando memória dinamicamente para cada string
+        directories[i] = strdup(buffer);  // Use strdup para copiar a string
+    }
+
+    // Exibir os diretórios para verificação
+    for (int i = 0; i < 4; i++) {
+        printf("Diretório %d: %s\n", i, directories[i]);
+    }
+
+    // Lembre-se de liberar a memória alocada dinamicamente
+    for (int i = 0; i < 4; i++) {
+        free((void*)directories[i]);
+    }
 
     const char *target_string = argv[1];
     const char *command = argv[2];
