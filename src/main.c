@@ -1,16 +1,36 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include "/home/user/Documentos/Logger-Analyzer/lib/file_scanner.h"
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/syscall.h>
+#include "lib/file_scanner.h"
 
-void* thread_function(void* arg) {
-    thread_data_t *data = (thread_data_t *)arg;
+void debugging(agent agent_data)
+{
+    printf("\n+--------------------------------------------------------------+\n");
+    printf("|                        [ Agent Data ]                        |\n");
+    printf("+--------------------------------------------------------------+\n");
+    printf("|   FILE Name : %-46s |\n", agent_data.filename);
+    printf("|   Target    : %-46s |\n", agent_data.target_string);
+    printf("|   Command   : %-46s |\n", agent_data.command);
+    printf("+--------------------------------------------------------------+\n\n");
+}
+
+void *thread_function(void *arg)
+{
+    agent *data = (agent *)arg;
+    // Assign thread ID as the actual kernel thread ID (PID for threads)
     tail_file(data->filename, data->target_string, data->command);
     return NULL;
 }
 
-int main(int argc, char *argv[]) {
-    if (argc != 3) { // Expect 3 arguments: target string and action command
+int main(int argc, char *argv[])
+{
+
+    if (argc != 3)
+    { // Expect 3 arguments: target string and action command
         fprintf(stderr, "Usage: %s <target_string> <action_command>\n", argv[0]);
         return 1;
     }
@@ -19,37 +39,42 @@ int main(int argc, char *argv[]) {
         "output/machine-zero",
         "output/machine-one",
         "output/machine-two",
-        "output/machine-three"
-    };
+        "output/machine-three"};
 
     const char *target_string = argv[1];
     const char *command = argv[2];
 
     pthread_t threads[4];
-    thread_data_t thread_data[4];
+    agent agent_data[4];
 
-    for (int i = 0; i < 4; i++) {
-        // Get the newest file from the directory
-        const char* newest_file = get_newest_file(directories[i]);
+    for (int i = 0; i < 4; i++)
+    {
 
-        //printf("Newest file is: %s\n",newest_file);
+        const char *newest_file = get_newest_file(directories[i]);
 
-        if (newest_file[0] == '\0') {
+        if (newest_file[0] == '\0')
+        {
             fprintf(stderr, "No valid files found in directory: %s\n", directories[i]);
             return 1;
         }
 
-        thread_data[i].filename = newest_file;
-        thread_data[i].target_string = target_string;
-        thread_data[i].command = command;
+        agent_data[i].filename = newest_file;
+        agent_data[i].target_string = target_string;
+        agent_data[i].command = command;
 
-        if (pthread_create(&threads[i], NULL, thread_function, &thread_data[i]) != 0) {
+        if (pthread_create(&threads[i], NULL, thread_function, &agent_data[i]) != 0)
+        {
             perror("Failed to create thread");
             return 1;
         }
+        else
+        {
+            debugging(agent_data[i]);
+        }
     }
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++)
+    {
         pthread_join(threads[i], NULL);
     }
 
