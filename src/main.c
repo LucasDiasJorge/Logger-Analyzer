@@ -3,7 +3,6 @@
 #include <pthread.h>
 #include "/home/user/Documentos/Logger-Analyzer/lib/file_scanner.h"
 
-
 void* thread_function(void* arg) {
     thread_data_t *data = (thread_data_t *)arg;
     tail_file(data->filename, data->target_string, data->command);
@@ -11,21 +10,36 @@ void* thread_function(void* arg) {
 }
 
 int main(int argc, char *argv[]) {
-    
-    if (argc != 7) { // Expect 7 arguments: program name, 4 filenames, target string, and action command
-        fprintf(stderr, "Usage: %s <filename1> <filename2> <filename3> <filename4> <target_string> <action_command>\n", argv[0]);
+    if (argc != 3) { // Expect 3 arguments: target string and action command
+        fprintf(stderr, "Usage: %s <target_string> <action_command>\n", argv[0]);
         return 1;
     }
 
-    const char *filenames[4] = {argv[1], argv[2], argv[3], argv[4]};
-    const char *target_string = argv[5];
-    const char *command = argv[6];
+    const char *directories[4] = {
+        "output/machine-zero",
+        "output/machine-one",
+        "output/machine-two",
+        "output/machine-three"
+    };
+
+    const char *target_string = argv[1];
+    const char *command = argv[2];
 
     pthread_t threads[4];
     thread_data_t thread_data[4];
 
     for (int i = 0; i < 4; i++) {
-        thread_data[i].filename = filenames[i];
+        // Get the newest file from the directory
+        const char* newest_file = get_newest_file(directories[i]);
+
+        //printf("Newest file is: %s\n",newest_file);
+
+        if (newest_file[0] == '\0') {
+            fprintf(stderr, "No valid files found in directory: %s\n", directories[i]);
+            return 1;
+        }
+
+        thread_data[i].filename = newest_file;
         thread_data[i].target_string = target_string;
         thread_data[i].command = command;
 
