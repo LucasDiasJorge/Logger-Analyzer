@@ -3,7 +3,41 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
+#include <signal.h>
 #include "lib/file_scanner.h"
+
+pthread_t threads[4]; // Variável global para as threads
+size_t num_threads = 4; // Número de threads global
+char *directories[4]; // Diretórios globais
+
+void cleanup_and_exit(int signal)
+{
+    printf("\nRecebido sinal %d, finalizando...\n", signal);
+
+    // Cancela todas as threads
+    for (size_t i = 0; i < num_threads; i++) {
+        pthread_cancel(threads[i]);
+    }
+
+    // Libera os diretórios
+    free_directories(directories, num_threads);
+
+    // Finaliza o programa
+    exit(0);
+}
+
+void setup_signal_handler()
+{
+    struct sigaction sa;
+    sa.sa_handler = cleanup_and_exit;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+
+    if (sigaction(SIGINT, &sa, NULL) != 0) {
+        perror("Erro ao configurar manipulador de sinal");
+        exit(1);
+    }
+}
 
 void debugging(agent agent_data)
 {
@@ -58,8 +92,10 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // Configura o manipulador de sinal para interceptar CTRL+C
+    setup_signal_handler();
+
     const size_t num_threads = 4;
-    char *directories[num_threads];
 
     // Lê os diretórios do usuário
     if (read_directories(directories, num_threads) != 0) {
@@ -68,8 +104,6 @@ int main(int argc, char *argv[])
 
     const char *target_string = argv[1];
     const char *command = argv[2];
-
-    pthread_t threads[num_threads];
 
     for (size_t i = 0; i < num_threads; i++) {
         const char *newest_file = get_newest_file(directories[i]);
