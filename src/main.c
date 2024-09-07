@@ -2,9 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/syscall.h>
+#include <string.h>
 #include "lib/file_scanner.h"
 
 void debugging(agent agent_data)
@@ -21,77 +19,96 @@ void debugging(agent agent_data)
 void *thread_function(void *arg)
 {
     agent *data = (agent *)arg;
-    // Assign thread ID as the actual kernel thread ID (PID for threads)
     tail_file(data->filename, data->target_string, data->command);
+    free(data); // Libera a memória alocada para os dados do agente
     return NULL;
+}
+
+int read_directories(char **directories, size_t num_directories)
+{
+    char buffer[256];  // Buffer para armazenar a entrada do usuário
+
+    for (size_t i = 0; i < num_directories; i++) {
+        printf("Digite o caminho para o diretório %zu: ", i);
+        if (scanf("%255s", buffer) != 1) {
+            fprintf(stderr, "Erro ao ler o caminho do diretório.\n");
+            return 1;
+        }
+        
+        directories[i] = strdup(buffer);  // Aloca e copia a string
+        if (directories[i] == NULL) {
+            fprintf(stderr, "Erro ao alocar memória para o diretório.\n");
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void free_directories(char **directories, size_t num_directories)
+{
+    for (size_t i = 0; i < num_directories; i++) {
+        free(directories[i]);
+    }
 }
 
 int main(int argc, char *argv[])
 {
-
-    if (argc != 3)
-    { // Expect 3 arguments: target string and action command
+    if (argc != 3) { // Espera 3 argumentos: target string e comando de ação
         fprintf(stderr, "Usage: %s <target_string> <action_command>\n", argv[0]);
         return 1;
     }
 
-    const char *directories[4];
-    char buffer[256];  // Buffer para armazenar a entrada do usuário
+    const size_t num_threads = 4;
+    char *directories[num_threads];
 
-    for (int i = 0; i < 4; i++) {
-        printf("Digite o caminho para o diretório %d: ", i);
-        scanf("%255s", buffer);  // Lê até 255 caracteres para evitar overflow
-
-        // Alocando memória dinamicamente para cada string
-        directories[i] = strdup(buffer);  // Use strdup para copiar a string
-    }
-
-    // Exibir os diretórios para verificação
-    for (int i = 0; i < 4; i++) {
-        printf("Diretório %d: %s\n", i, directories[i]);
-    }
-
-    // Lembre-se de liberar a memória alocada dinamicamente
-    for (int i = 0; i < 4; i++) {
-        free((void*)directories[i]);
+    // Lê os diretórios do usuário
+    if (read_directories(directories, num_threads) != 0) {
+        return 1; // Se falhar ao ler ou alocar, termina o programa
     }
 
     const char *target_string = argv[1];
     const char *command = argv[2];
 
-    pthread_t threads[4];
-    agent agent_data[4];
+    pthread_t threads[num_threads];
 
-    for (int i = 0; i < 4; i++)
-    {
-
+    for (size_t i = 0; i < num_threads; i++) {
         const char *newest_file = get_newest_file(directories[i]);
 
-        if (newest_file[0] == '\0')
-        {
-            fprintf(stderr, "No valid files found in directory: %s\n", directories[i]);
+        if (newest_file == NULL || newest_file[0] == '\0') {
+            fprintf(stderr, "Nenhum arquivo válido encontrado no diretório: %s\n", directories[i]);
+            free_directories(directories, num_threads); // Libera os diretórios antes de sair
             return 1;
         }
 
-        agent_data[i].filename = newest_file;
-        agent_data[i].target_string = target_string;
-        agent_data[i].command = command;
-
-        if (pthread_create(&threads[i], NULL, thread_function, &agent_data[i]) != 0)
-        {
-            perror("Failed to create thread");
+        // Alocar dinamicamente o agente para evitar race conditions
+        agent *agent_data = malloc(sizeof(agent));
+        if (agent_data == NULL) {
+            fprintf(stderr, "Erro ao alocar memória para os dados do agente.\n");
+            free_directories(directories, num_threads); // Libera os diretórios antes de sair
             return 1;
         }
-        else
-        {
-            debugging(agent_data[i]);
+
+        agent_data->filename = strdup(newest_file);
+        agent_data->target_string = target_string;
+        agent_data->command = command;
+
+        if (pthread_create(&threads[i], NULL, thread_function, agent_data) != 0) {
+            perror("Falha ao criar thread");
+            free(agent_data);
+            free_directories(directories, num_threads); // Libera os diretórios antes de sair
+            return 1;
         }
+
+        debugging(*agent_data);
     }
 
-    for (int i = 0; i < 4; i++)
-    {
+    // Espera todas as threads terminarem
+    for (size_t i = 0; i < num_threads; i++) {
         pthread_join(threads[i], NULL);
     }
+
+    // Libera os diretórios após as threads terminarem
+    free_directories(directories, num_threads);
 
     return 0;
 }
