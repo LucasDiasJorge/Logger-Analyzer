@@ -40,7 +40,7 @@ void clean_log_message(char *message) {
 }
 
 // Funcao que realiza a tomada de decisao
-int make_decision(const char *log_message, DecisionNode *root) {
+int make_decision(const char *log_message) {
     char clean_message[256];
     strncpy(clean_message, log_message, sizeof(clean_message) - 1);
     clean_message[sizeof(clean_message) - 1] = '\0';  // Garantir null-terminado

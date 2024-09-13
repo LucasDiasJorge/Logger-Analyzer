@@ -5,6 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-int make_decision(const char *log_message, DecisionNode *root);
+int make_decision(const char *log_message);
 
 #endif

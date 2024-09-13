@@ -168,7 +168,7 @@ void tail_file(const char *filename, DecisionNode *root) {
                 sleep(1);
 
                 // Executa a decisão com base no conteúdo do buffer (log)
-                make_decision(buffer, root);
+                make_decision(buffer);
 
                 // Atualiza a posição do arquivo
                 position = ftell(file);
