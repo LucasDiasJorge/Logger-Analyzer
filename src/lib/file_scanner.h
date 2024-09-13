@@ -9,17 +9,17 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <limits.h>
+#include "decision_tree.h"
 
 #define BUFFER_SIZE 1024
 
 typedef struct {
     const char *filename;
-    const char *target_string;
-    const char *command;
+    DecisionNode root;
 } agent;
 
 const char* get_newest_file(const char* dirpath);
 
-void tail_file(const char *filename, const char *target, const char *command);
+void tail_file(const char *filename, DecisionNode root);
 
 #endif
