@@ -4,7 +4,7 @@
 CC = gcc
 
 # Source files
-SRC = src/main.c src/file_scanner.c src/action.c
+SRC = src/main.c src/file_scanner.c src/decision_tree.c src/action.c
 
 # Executable name
 TARGET = executable
