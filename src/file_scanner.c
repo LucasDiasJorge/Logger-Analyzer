@@ -10,7 +10,7 @@
 #include <time.h>
 #include <ctype.h>
 #include "lib/decision_tree.h"
-#include "lib/action.h"
+#include "lib/decision.h"
 
 #define ANSI_BACKGROUND_WHITE_COLOR_BLACK   "\x1b[47m\x1b[30m"
 #define ANSI_BACKGROUND_YELLOW_COLOR_BLACK  "\x1b[43m\x1b[30m"
@@ -168,7 +168,7 @@ void tail_file(const char *filename, DecisionNode *root) {
                 sleep(1);
 
                 // Executa a decisão com base no conteúdo do buffer (log)
-                make_decision(buffer);
+                make_decision(buffer, root);
 
                 // Atualiza a posição do arquivo
                 position = ftell(file);
