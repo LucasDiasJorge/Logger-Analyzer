@@ -39,8 +39,8 @@ void clean_log_message(char *message) {
     *(end + 1) = '\0';
 }
 
-// Funcao que realiza a tomada de decisao
-int make_decision(const char *log_message) {
+// Função que realiza a tomada de decisão usando a árvore de decisão
+int make_decision(const char *log_message, DecisionNode *root) {
     char clean_message[256];
     strncpy(clean_message, log_message, sizeof(clean_message) - 1);
     clean_message[sizeof(clean_message) - 1] = '\0';  // Garantir null-terminado
@@ -48,44 +48,34 @@ int make_decision(const char *log_message) {
     // Limpar a mensagem de log
     clean_log_message(clean_message);
 
-    const char *command = NULL;
-
-    // Verifique a mensagem do log para decidir o comando
-    if (strstr(clean_message, "Falha de segmentacao") != NULL) {
-        command = "RESTART"; // Exemplo de comando para reiniciar
-    } 
-    else if (strstr(clean_message, "erro de memoria") != NULL) {
-        command = "SHUTDOWN"; // Comando para desligar
-    } 
-    else if (strstr(clean_message, "alerta de seguranca") != NULL) {
-        command = "ALERT"; // Comando para enviar um alerta
-    } 
-    else {
-        command = "LOG"; // Padrão: log de erro
-    }
+    // Buscar a decisão na árvore de decisão
+    const char *action = get_decision(root, clean_message);
 
     // Realiza a ação com base na decisão
-    if (command) {
-        if (strcmp(command, "RESTART") == 0) {
+    if (action) {
+        if (strcmp(action, "RESTART") == 0) {
             printf(ANSI_COLOR_RED "Executando ação: Reiniciar o sistema\n" ANSI_RESET_ALL);
             // Aqui você pode colocar o comando real para reiniciar
             // Exemplo: system("sudo reboot");
         } 
-        else if (strcmp(command, "SHUTDOWN") == 0) {
+        else if (strcmp(action, "SHUTDOWN") == 0) {
             printf(ANSI_COLOR_RED "Executando ação: Desligar o sistema\n" ANSI_RESET_ALL);
             // Exemplo: system("sudo shutdown now");
         } 
-        else if (strcmp(command, "ALERT") == 0) {
+        else if (strcmp(action, "ALERT") == 0) {
             printf(ANSI_COLOR_YELLOW "Executando ação: Enviar alerta ao administrador\n" ANSI_RESET_ALL);
             // Enviar alerta (Exemplo: e-mail)
         } 
-        else if (strcmp(command, "LOG") == 0) {
+        else if (strcmp(action, "LOG") == 0) {
             printf(ANSI_COLOR_GREEN "Registrando log de erro\n" ANSI_RESET_ALL);
             // Registrar log de erro (Exemplo: escrever em um arquivo de log)
         }
+        else {
+            printf("Ação não reconhecida.\n");
+        }
         return 0;
     }
-    
+
     printf("Comando não reconhecido.\n");
     return 1;
 }
