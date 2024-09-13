@@ -1,6 +1,10 @@
 #ifndef ACTION_H
 #define ACTION_H
 
-int run_command(const char *command);
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int make_decision(const char *log_message, DecisionNode *root);
 
 #endif
