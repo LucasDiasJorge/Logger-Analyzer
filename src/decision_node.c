@@ -10,8 +10,6 @@ DecisionNode* create_node(int action) {
     return node;
 }
 
-DecisionNode *root;
-
 // Libera a árvore da memória
 void free_tree(DecisionNode *root) {
     if (root == NULL) return;

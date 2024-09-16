@@ -22,12 +22,10 @@ typedef struct DecisionNode {
     struct DecisionNode *right;
 } DecisionNode;
 
-DecisionNode *root;
-
 // Funções da árvore de decisão
 DecisionNode* create_node(int action);
 void free_tree(DecisionNode *root);
-const DecisionNode* build_decision_tree();
+DecisionNode* build_decision_tree();
 int get_action(DecisionNode *root, int error_severity);
 int make_decision(const char* log_message, DecisionNode* decision_tree);
 

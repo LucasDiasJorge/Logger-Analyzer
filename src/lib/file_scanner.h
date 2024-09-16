@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <limits.h>
-#include "decision_tree.h"
+#include "decision_node.h"
 
 #define BUFFER_SIZE 1024
 
