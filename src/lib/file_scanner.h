@@ -15,11 +15,11 @@
 
 typedef struct {
     const char *filename;
-    DecisionNode root;
+    DecisionNode *root;
 } agent;
 
 const char* get_newest_file(const char* dirpath);
 
-void tail_file(const char *filename, DecisionNode root);
+void tail_file(const char *filename, DecisionNode *root);
 
 #endif
