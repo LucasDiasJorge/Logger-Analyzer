@@ -2,6 +2,10 @@
     "files.associations": {
         "decision.h": "c",
         "decision_tree.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "error_map.h": "c",
+        "stdbool.h": "c",
+        "decision_node.h": "c",
+        "signal.h": "c"
     }
 }
