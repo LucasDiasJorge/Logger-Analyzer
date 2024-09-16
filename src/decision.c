@@ -9,6 +9,14 @@
 #define ANSI_COLOR_YELLOW       "\x1b[33m"
 #define ANSI_COLOR_GREEN        "\x1b[32m"
 
+// Definição de códigos de ação
+#define ACTION_RESTART 1
+#define ACTION_SHUTDOWN 2
+#define ACTION_ALERT 3
+#define ACTION_LOG 4
+#define ACTION_REPAIR 5
+#define ACTION_SLOWDOWN 6
+
 // Função para limpar a mensagem de log, removendo caracteres não imprimíveis e espaços extras
 void clean_log_message(char *message) {
     char *src = message;
@@ -39,7 +47,6 @@ void clean_log_message(char *message) {
     *(end + 1) = '\0';
 }
 
-// Função que realiza a tomada de decisão usando a árvore de decisão
 int make_decision(const char *log_message, DecisionNode *root) {
     char clean_message[256];
     strncpy(clean_message, log_message, sizeof(clean_message) - 1);
@@ -49,33 +56,32 @@ int make_decision(const char *log_message, DecisionNode *root) {
     clean_log_message(clean_message);
 
     // Buscar a decisão na árvore de decisão
-    const char *action = get_decision(root, clean_message);
+    int action = get_decision(root, clean_message);
 
-    // Realiza a ação com base na decisão
-    if (action) {
-        if (strcmp(action, "RESTART") == 0) {
+    // Realiza a ação com base no código da decisão
+    switch(action) {
+        case ACTION_RESTART:
             printf(ANSI_COLOR_RED "Executando ação: Reiniciar o sistema\n" ANSI_RESET_ALL);
-            // Aqui você pode colocar o comando real para reiniciar
-            // Exemplo: system("sudo reboot");
-        } 
-        else if (strcmp(action, "SHUTDOWN") == 0) {
+            break;
+        case ACTION_SHUTDOWN:
             printf(ANSI_COLOR_RED "Executando ação: Desligar o sistema\n" ANSI_RESET_ALL);
-            // Exemplo: system("sudo shutdown now");
-        } 
-        else if (strcmp(action, "ALERT") == 0) {
+            break;
+        case ACTION_ALERT:
             printf(ANSI_COLOR_YELLOW "Executando ação: Enviar alerta ao administrador\n" ANSI_RESET_ALL);
-            // Enviar alerta (Exemplo: e-mail)
-        } 
-        else if (strcmp(action, "LOG") == 0) {
+            break;
+        case ACTION_LOG:
             printf(ANSI_COLOR_GREEN "Registrando log de erro\n" ANSI_RESET_ALL);
-            // Registrar log de erro (Exemplo: escrever em um arquivo de log)
-        }
-        else {
+            break;
+        case ACTION_REPAIR:
+            printf(ANSI_COLOR_GREEN "Executando ação: Reparar disco\n" ANSI_RESET_ALL);
+            break;
+        case ACTION_SLOWDOWN:
+            printf(ANSI_COLOR_YELLOW "Executando ação: Reduzir uso de CPU\n" ANSI_RESET_ALL);
+            break;
+        default:
             printf("Ação não reconhecida.\n");
-        }
-        return 0;
+            return 1;
     }
 
-    printf("Comando não reconhecido.\n");
-    return 1;
+    return 0;
 }
