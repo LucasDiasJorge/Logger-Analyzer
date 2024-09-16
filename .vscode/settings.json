@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "decision.h": "c",
+        "decision_tree.h": "c",
+        "string.h": "c"
+    }
+}
