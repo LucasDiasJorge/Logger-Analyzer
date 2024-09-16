@@ -9,8 +9,7 @@
 #include <limits.h>
 #include <time.h>
 #include <ctype.h>
-#include "lib/decision_tree.h"
-#include "lib/decision.h"
+#include "lib/decision_node.h"
 
 #define ANSI_BACKGROUND_WHITE_COLOR_BLACK   "\x1b[47m\x1b[30m"
 #define ANSI_BACKGROUND_YELLOW_COLOR_BLACK  "\x1b[43m\x1b[30m"
