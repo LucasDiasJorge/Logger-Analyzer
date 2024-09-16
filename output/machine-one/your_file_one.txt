@@ -88,3 +88,13 @@ disk not found
 disk error
 high CPU usage
 memory access violation
+memory access violation
+memory access violation
+high CPU usage
+system error
+system error
+high CPU usage
+system error
+system error
+system error
+memory leak
