@@ -1,15 +1,20 @@
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <string.h>
+#include "lib/decision_node.h"
+#include "lib/error_map.h"
 #include <signal.h>
-#include "lib/file_scanner.h"
-#include "lib/decision_tree.h"
+#include <pthread.h>
+
 
 pthread_t *threads;  // Global variable for threads
 size_t num_threads = 0;  // Global number of threads
 char **directories;  // Global directories
+
+// Estrutura que armazena os dados de cada thread
+typedef struct {
+    char *filename;
+    const char *target_string;
+    const char *command;
+    DecisionNode *root;
+} agent;
 
 void cleanup_and_exit(int signal)
 {
@@ -104,10 +109,16 @@ void free_directories(char **directories, size_t num_directories)
     free(directories);  // Free memory allocated for directories array
 }
 
-int main(int argc, char *argv[])
-{
+int main() {
+
     // Setup signal handler to intercept CTRL+C
     setup_signal_handler();
+
+    // Inicializa o mapa de erros
+    initialize_error_map();
+
+    // Constrói a árvore de decisão
+    DecisionNode *decision_tree = build_decision_tree();
 
     // Read directories from user
     if (read_directories(&directories, &num_threads) != 0) {
@@ -167,4 +178,5 @@ int main(int argc, char *argv[])
     free(threads);
 
     return 0;
+    
 }
