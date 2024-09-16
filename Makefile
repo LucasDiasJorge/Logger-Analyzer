@@ -5,7 +5,7 @@ CC = gcc
 CFLAGS = -Wall -g
 
 # Source files
-SRC = src/main.c src/file_scanner.c src/decision_tree.c src/decision.c
+SRC = src/main.c src/file_scanner.c src/decision_node.c src/error_map.c
 
 # Object files
 OBJ = $(SRC:.c=.o)
