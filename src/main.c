@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
 
         agent_data->filename = strdup(newest_file);
         DecisionNode *root = build_decision_tree();
-        agent_data->root = *root;
+        agent_data->root = root;
 
         if (pthread_create(&threads[i], NULL, thread_function, agent_data) != 0) {
             perror("Failed to create thread");
