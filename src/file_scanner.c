@@ -155,19 +155,16 @@ void tail_file(const char *filename, DecisionNode *root) {
 
             if (strlen(buffer) > 0) {
                 printf("\n");
-                printf(ANSI_BACKGROUND_YELLOW_COLOR_BLACK ANSI_BOLD_TEXT "======================== [EVENT DETECTED] ========================");
-                printf(ANSI_RESET_ALL "\n");
                 print_current_time();
                 printf("\n");
+                printf(ANSI_BACKGROUND_YELLOW_COLOR_BLACK ANSI_BOLD_TEXT "======================== [EVENT DETECTED] ========================");
+                printf(ANSI_RESET_ALL "\n");
                 printf("Buffer: \"%s\"\n", buffer);
                 printf("Found in file: %s\n", filename);
+                printf("Action: ");
+                make_decision(buffer, root);
                 printf(ANSI_BACKGROUND_YELLOW_COLOR_BLACK ANSI_BOLD_TEXT "==================================================================");
                 printf(ANSI_RESET_ALL "\n");
-
-                sleep(1);
-
-                // Executa a decisão com base no conteúdo do buffer (log)
-                make_decision(buffer, root);
 
                 // Atualiza a posição do arquivo
                 position = ftell(file);
