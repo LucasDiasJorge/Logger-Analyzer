@@ -7,13 +7,13 @@
 
 typedef struct DecisionNode {
     char *condition;               
-    char *decision;                  
+    int decision;                  
     struct DecisionNode *yes;      
     struct DecisionNode *no;       
 } DecisionNode;
 
 // Função para criar um novo nó de decisão
-DecisionNode* create_node(char *condition, char *decision);
+DecisionNode* create_node(char *condition, int decision);
 
 // Função para liberar a memória da árvore
 void free_tree(DecisionNode *root);
@@ -22,6 +22,6 @@ void free_tree(DecisionNode *root);
 DecisionNode* build_decision_tree(); 
 
 // Funcao para retornar a decisao
-const char* get_decision(DecisionNode *root, const char *log_message);
+int get_decision(DecisionNode *root, const char *log_message);
 
 #endif
