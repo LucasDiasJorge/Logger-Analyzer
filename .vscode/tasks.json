@@ -9,8 +9,8 @@
                 "-g",
                 "${fileDirname}/main.c",
                 "${fileDirname}/file_scanner.c", 
-                "${fileDirname}/decision_tree.c", 
-                "${fileDirname}/decision.c",
+                "${fileDirname}/decision_node.c", 
+                "${fileDirname}/error_map.c",
                 "-o",
                 "${fileDirname}/main"
             ],
